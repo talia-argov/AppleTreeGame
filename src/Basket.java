@@ -20,14 +20,15 @@ public class Basket {
         public boolean down;
         public boolean up;
 
-        public Basket(int pXpos, int pYpos) {
+        public Basket(int dxParameter, int dyParameter, Image picParameter) {
 
-                xpos = pXpos;
-                ypos = pYpos;
+                xpos = 200;
+                ypos = 300;
                 width = 50;
                 height = 50;
-                dx = 5;
-                dy = -5;
+                dx = dxParameter;
+                dy = dyParameter;
+                pic = picParameter;
                 isAlive = true;
                 //       hits = 0;
                 rec = new Rectangle(xpos, ypos, width, height);
@@ -67,7 +68,6 @@ public class Basket {
                                 ypos = 1;
                         }
                 }
-                //always put this after you've done all the changing of the xpos and ypos values
                 rec = new Rectangle(xpos, ypos, width, height);
         }
 

@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Birds {
+public class Worms {
     //VARIABLE DECLARATION SECTION
     //Here's where you state which variables you are going to use.
     public String name;               //name of the hero
@@ -19,7 +19,7 @@ public class Birds {
     public boolean down;
     public boolean up;
 
-    public Birds(int pXpos, int pYpos) {
+    public Worms(int pXpos, int pYpos) {
 
         xpos = pXpos;
         ypos = pYpos;
