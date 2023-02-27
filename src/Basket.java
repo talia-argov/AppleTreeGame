@@ -42,31 +42,32 @@ public class Basket {
                 ypos = ypos + dy;
 
                 if (right) {
-                        xpos = xpos + dx;
-                        if (xpos > 1000 - width) {
-                                xpos = 1000 - width;
-                        }
+                        dx = 5;
                 }
 
                 if (left) {
-                        xpos = xpos - dx;
-                        if (xpos < 0 + width) {
-                                xpos = 0 + width;
-                        }
+                        dx = -5;
                 }
 
                 if (down) {
-                        ypos = ypos + dy;
-                        if (ypos > 700 - height) {
-                                ypos = 700 - height;
-                        }
+                        dy = 5;
                 }
 
                 if (up) {
-                        ypos = ypos - dy;
-                        if (ypos <= 0) {
-                                ypos = 1;
-                        }
+                        dy = -5;
+                }
+
+                if (xpos > 1000 - width) {
+                        xpos = 1000 - width;
+                }
+                if (xpos < 0 + width) {
+                        xpos = 0 + width;
+                }
+                if (ypos > 700 - height) {
+                        ypos = 700 - height;
+                }
+                if (ypos <= 0) {
+                        ypos = 1;
                 }
                 rec = new Rectangle(xpos, ypos, width, height);
         }

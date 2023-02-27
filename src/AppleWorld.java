@@ -26,11 +26,11 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
         public Image wormPic;
         public Image backgroundPic;
 
-//Declare the variables needed for images below
+        //Declare the variables needed for images below
         public Apples apple;
         public Basket basket;
         public Worms worm;
-      //  public Background background;
+        //  public Background background;
 
 //Declare the character objects below
 
@@ -51,7 +51,7 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
                 //Pic = Toolkit.getDefaultToolkit().getImage("_____.png"); //load the picture
                 //character = new MarioKart("____",100,100); //construct
 
-                backgroundPic = Toolkit.getDefaultToolkit().getImage("backgroundpic.png");
+                backgroundPic = Toolkit.getDefaultToolkit().getImage("background.jpeg");
 
                 applePic = Toolkit.getDefaultToolkit().getImage("applepic.png");
                 apple = new Apples(10, 10);
@@ -73,10 +73,9 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
         }
 
         public void moveThings(){
-//        basket.move();
-                // apple.move2();
-                // worms.move();
-                // etc
+                basket.move();
+                apple.move();
+                worm.move();
         }
 
         public void render(){
@@ -85,21 +84,21 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
 
                 //draw characters to the screen
                 //g.drawImage(Pic,0,0,WIDTH,HEIGHT,null);
-                g.drawImage(backgroundPic,500,500,400,400,null);
+                g.drawImage(backgroundPic,0,0,1000,700,null);
 
-                g.drawImage(basketPic,500,700,100,100,null);
+                g.drawImage(basketPic,basket.xpos,basket.ypos,150,220,null);
 
                 g.drawImage(applePic,300,300,50,50,null);
 
-                g.drawImage(wormPic,600,700,100,100,null);
+                g.drawImage(wormPic,600,600,100,100,null);
 
                 g.dispose();
                 bufferStrategy.show();
 
-             // if (basket.isAlive == true) {
-             //         System.out.println("basket is printed");
+                // if (basket.isAlive == true) {
+                //         System.out.println("basket is printed");
                 //trying to figure out if other images are getting rendered
-              }
+                //}
         }
 
         public void checkIntersections(){
@@ -117,17 +116,17 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
                 int keyCode=event.getKeyCode();  //gets the keyCode (an integer) of the key pressed
                 System.out.println("Key Pressed: "+key+"  Code: "+keyCode);
 
-                if(keyCode==68){ //d
-                        //    basket.right = true;
+                if(keyCode==38){ //arrow up
+                        basket.up = true;
                 }
-                if(keyCode==65){ //a
-                        //        basket.left = true;
+                if(keyCode==40){//arrow down
+                        basket.down = true;
                 }
-                if(keyCode==83){ //s
-                        //   basket.down = true;
+                if(keyCode==39){ //arrow right
+                        basket.right = true;
                 }
-                if(keyCode==87){ //w
-                        //    basket.up = true;
+                if(keyCode==37){ //arrow left
+                        basket.left = true;
                 }
                 //  if(keyCode == 32) { //space bar
                 //     user. = true;
@@ -139,17 +138,17 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
                 char key=event.getKeyChar();
                 int keyCode=event.getKeyCode();
                 //This method will do something when a key is released
-                if(keyCode==68){ //d
-                        //    basket.right = false;
+                if(keyCode==38){ //arrow up
+                        basket.up = false;
                 }
-                if(keyCode==65){//a
-                        //    basket.left = false;
+                if(keyCode==40){//arrow down
+                        basket.down = false;
                 }
-                if(keyCode==83){ //s
-                        //    basket.down = false;
+                if(keyCode==39){ //arrow right
+                        basket.right = false;
                 }
-                if(keyCode==87){ //w
-                        //   basket.up = false;
+                if(keyCode==37){ //arrow left
+                        basket.left = false;
                 }
 
         }//keyReleased()
@@ -194,7 +193,8 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
         }
 
         public void mouseClicked(MouseEvent e) {
-
+                System.out.print("x = "+e.getX());
+                System.out.println(" y = "+e.getY());
         }
 
         public void mousePressed(MouseEvent e) {
