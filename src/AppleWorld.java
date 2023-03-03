@@ -30,6 +30,7 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
         public Apples apple;
         public Basket basket;
         public Worms worm;
+        public Apples[] apples;
         //  public Background background;
 
 //Declare the character objects below
@@ -61,7 +62,13 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
 
                 wormPic = Toolkit.getDefaultToolkit().getImage("wormpic.png");
                 worm = new Worms(200, 200);
+
+                apples = new Apples[20];
+                for (int i = 0; i < apples.length; i++) {
+                        apples[i] = new Apples((int)(Math.random()*50) + 10, (int)(Math.random()*50) + 10);
+                }
         }
+
 
         public void run(){
                 while(true){
@@ -91,6 +98,14 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
                 g.drawImage(applePic,300,300,50,50,null);
 
                 g.drawImage(wormPic,600,600,100,100,null);
+
+                g.drawRect(0, 100, WIDTH, 200);
+                for (int i = 0; i < apples.length; i++) {
+
+                        g.drawImage(applePic, apples[i].xpos, apples[i].ypos, apples[i].width, apples[i].height, null);
+                }
+
+             //   g.drawImage(apples,Math.random()*200)+100);
 
                 g.dispose();
                 bufferStrategy.show();

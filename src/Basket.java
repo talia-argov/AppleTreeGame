@@ -44,17 +44,21 @@ public class Basket {
                 if (right) {
                         dx = 5;
                 }
-
-                if (left) {
+                else if (left) {
                         dx = -5;
+                }
+                else {
+                        dx = 0;
                 }
 
                 if (down) {
                         dy = 5;
                 }
-
-                if (up) {
+                else if (up) {
                         dy = -5;
+                }
+                else {
+                        dy = 0;
                 }
 
                 if (xpos > 1000 - width) {
