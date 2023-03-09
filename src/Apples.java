@@ -19,16 +19,17 @@ public class Apples {
     public boolean down;
     public boolean up;
 
-    public Apples(int pXpos, int pYpos) {
+    public Apples(int pXpos, int pYpos, Image pPic) {
 
         xpos = pXpos;
         ypos = pYpos;
         width = 50;
         height = 50;
         dx = 5;
-        dy = -5;
+        dy = -2;
         isAlive = true;
         // hits = 0;
+        pic = pPic;
         rec = new Rectangle(xpos, ypos, width, height);
 
 
@@ -36,7 +37,11 @@ public class Apples {
 
 
     public void move() {
-        xpos = xpos + dx;
-        ypos = ypos + dy;
+        ypos = ypos - dy;
+
+        rec = new Rectangle(xpos, ypos, width, height);
+
     }
+
+
 }

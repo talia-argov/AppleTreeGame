@@ -20,6 +20,8 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
         public Canvas canvas;
         public JPanel panel;
 
+        public boolean gameStart = false;
+
         public BufferStrategy bufferStrategy;
         public Image applePic;
         public Image basketPic;
@@ -31,7 +33,10 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
         public Basket basket;
         public Worms worm;
         public Apples[] apples;
-        //  public Background background;
+        public int caughtApples=0;
+        public int fallenApples=0;
+        public int timer=0;
+        public boolean gameOver=false;
 
 //Declare the character objects below
 
@@ -55,20 +60,21 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
                 backgroundPic = Toolkit.getDefaultToolkit().getImage("background.jpeg");
 
                 applePic = Toolkit.getDefaultToolkit().getImage("applepic.png");
-                apple = new Apples(10, 10);
+                apple = new Apples(10, 10, applePic);
 
                 basketPic = Toolkit.getDefaultToolkit().getImage("basketpic.png");
-                basket = new Basket(100, 100, basketPic);
+                basket = new Basket(10, 100, basketPic);
 
                 wormPic = Toolkit.getDefaultToolkit().getImage("wormpic.png");
                 worm = new Worms(200, 200);
 
-                apples = new Apples[20];
+                apples = new Apples[10];
                 for (int i = 0; i < apples.length; i++) {
-                        apples[i] = new Apples((int)(Math.random()*50) + 10, (int)(Math.random()*50) + 10);
+                        apples[i] = new Apples((int)(Math.random()*WIDTH) - 50, (int)(Math.random()*150) + 100, applePic);
+                        apples[i].dy = (int)(Math.random()*-4 - 1);
                 }
-        }
 
+        }
 
         public void run(){
                 while(true){
@@ -76,37 +82,107 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
                         checkIntersections();   // check character crashes
                         render();               // paint the graphics
                         pause(20);         // sleep for 20 ms
+                        if(gameStart) {
+                                timer++;
+                        }
                 }
         }
 
         public void moveThings(){
-                basket.move();
-                apple.move();
-                worm.move();
+                if(gameStart == true) {
+                        basket.move();
+                        apple.move();
+                        worm.move();
+
+                        for (int i = 0; i < apples.length; i++) {
+                                apples[i].move();
+                        }
+                }
         }
 
         public void render(){
                 Graphics2D g=(Graphics2D)bufferStrategy.getDrawGraphics();
                 g.clearRect(0,0,WIDTH,HEIGHT);
+                System.out.println(timer);
+                if(timer==200){
+                        gameOver=true;
+//                        gameStart = false;
+                }
 
                 //draw characters to the screen
                 //g.drawImage(Pic,0,0,WIDTH,HEIGHT,null);
                 g.drawImage(backgroundPic,0,0,1000,700,null);
 
-                g.drawImage(basketPic,basket.xpos,basket.ypos,150,220,null);
+                if (gameStart == false) {
+                        g.setColor(Color.GREEN);
+                        g.fillRect(328, 327, 370, 100);
+                        g.setFont(new Font("TimesRoman", Font.BOLD, 35));
+                        g.setColor(Color.RED);
+                        g.drawString("Press SPACE to Start", 350, 380);
+                        g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+                        g.drawString("Use left and right arrow keys to move",400, 400);
+                } // start screen
+                else if (gameStart == true && gameOver == false){
+                        g.drawImage(basketPic, basket.xpos, basket.ypos, basket.width, basket.height, null);
 
-                g.drawImage(applePic,300,300,50,50,null);
+                        g.drawImage(applePic, 300, 300, 50, 50, null);
 
-                g.drawImage(wormPic,600,600,100,100,null);
+                        g.drawImage(wormPic, 600, 600, 100, 100, null);
 
-                g.drawRect(0, 100, WIDTH, 200);
-                for (int i = 0; i < apples.length; i++) {
+                        g.setColor(Color.RED);
+                        g.fillRect(350, 110, 50, 45);
+                        g.setColor(Color.RED);
+                        g.fillRect(633,110, 50, 45);
+                        g.setFont(new Font("TimesRoman", Font.BOLD, 35));
+                        g.setColor(Color.BLACK);
+                        g.drawString("Apples Collected     Apples Fallen", 250, 100);
+                        g.drawString(caughtApples+"",364, 145);
+                        g.drawString(fallenApples+"",646,145);
+                        for (int i = 0; i < apples.length; i++) {
+                                if (apples[i].isAlive == true) {
+                                        g.drawImage(apples[i].pic, apples[i].xpos, apples[i].ypos, apples[i].width, apples[i].height, null);
+                                }
+                        }
+                        g.drawString("Time: "+(200-(timer/10)), 450, 145);
 
-                        g.drawImage(applePic, apples[i].xpos, apples[i].ypos, apples[i].width, apples[i].height, null);
+                } // actual gameplay
+                else if(gameOver==true){
+                        for (int i = 0; i < apples.length; i++) {
+                                apples[i].dy=0;
+                                apples[i].dx=0;
+                        }
+
+
+                        g.setFont(new Font("TimesRoman", Font.BOLD, 35));
+
+                        g.drawString("Time: 0", 450, 145);
+
+                        g.setColor(Color.GREEN);
+                        g.fillRect(328, 327, 370, 100);
+
+                        if(caughtApples>fallenApples){
+                                g.setColor(Color.BLACK);
+                                g.setFont(new Font("TimesRoman", Font.BOLD, 35));
+                                g.drawString("YOU WIN 💅",400,400);
+                        g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+                        g.drawString("Click ENTER to Restart",400, 370);}
+
+                        else{
+                                g.setColor(Color.BLACK);
+                                g.setFont(new Font("TimesRoman", Font.BOLD, 35));
+                                g.drawString("YOU LOSE 🥰",400,400);
+                                g.setFont(new Font("TimesRoman", Font.BOLD, 15));
+                                g.drawString("Click ENTER to Restart",400, 370);
+                        }
+                        System.out.println("gameover");
+                        //    Apples.isAlive == false;
+                        //  caughtApples.isAlive == false;
+                        //  fallenApples.isAlive == false;
+
+                } // game over screen
+                else {
+                        System.out.println("Boolean problems!");
                 }
-
-             //   g.drawImage(apples,Math.random()*200)+100);
-
                 g.dispose();
                 bufferStrategy.show();
 
@@ -117,7 +193,25 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
         }
 
         public void checkIntersections(){
+                for (int i = 0; i< apples.length; i++){
+                        if (apples[i].rec.intersects(basket.basketrec)) {
+                                apples[i] = new Apples((int)(Math.random()*WIDTH) - 50, (int)(Math.random()*150) + 100, applePic);
+                                apples[i].dy = (int)(Math.random()*-4 - 1);
+                                caughtApples++;
+                        }
 
+                        if(apples[i].ypos > 1000){
+                                apples[i] = new Apples((int)(Math.random()*WIDTH) - 50, (int)(Math.random()*150) + 100, applePic);
+                                apples[i].dy = (int)(Math.random()*-4 - 1);
+                                fallenApples++;
+                        }
+                }
+                for(int i = 0; i< apples.length; i++){
+                        if(apples[i].rec.intersects(basket.basketrec)&& apples[i].isAlive==true){
+                                // apples[i].isAlive=false;
+                                System.out.println("boom");
+                        }
+                }
         }
 
         public void keyTyped(KeyEvent e) {
@@ -143,10 +237,15 @@ public class AppleWorld implements Runnable, KeyListener, MouseListener {
                 if(keyCode==37){ //arrow left
                         basket.left = true;
                 }
-                //  if(keyCode == 32) { //space bar
-                //     user. = true;
-                //   }
-                //keyPressed()
+                if(gameStart == false && keyCode == 32) {
+                        gameStart = true;
+                }
+
+                if(gameOver == true && keyCode == 13){
+                        gameStart = false;
+                        gameOver = false;
+                }
+
         }
 
         public void keyReleased(KeyEvent event){

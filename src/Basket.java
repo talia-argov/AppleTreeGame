@@ -19,19 +19,21 @@ public class Basket {
         public boolean left;
         public boolean down;
         public boolean up;
+        public Rectangle basketrec;
 
         public Basket(int dxParameter, int dyParameter, Image picParameter) {
 
                 xpos = 200;
-                ypos = 300;
-                width = 50;
-                height = 50;
+                ypos = 600;
+                width = 115;
+                height = 210;
                 dx = dxParameter;
                 dy = dyParameter;
                 pic = picParameter;
                 isAlive = true;
                 //       hits = 0;
                 rec = new Rectangle(xpos, ypos, width, height);
+                basketrec = new Rectangle(xpos+40,ypos+60, width/2, height/2);
 
 
         } // constructor
@@ -39,7 +41,7 @@ public class Basket {
 
         public void move() {
                 xpos = xpos + dx;
-                ypos = ypos + dy;
+                //ypos = ypos + dy;
 
                 if (right) {
                         dx = 5;
@@ -64,8 +66,8 @@ public class Basket {
                 if (xpos > 1000 - width) {
                         xpos = 1000 - width;
                 }
-                if (xpos < 0 + width) {
-                        xpos = 0 + width;
+                if (xpos < 0) {
+                        xpos = 0;
                 }
                 if (ypos > 700 - height) {
                         ypos = 700 - height;
@@ -74,6 +76,8 @@ public class Basket {
                         ypos = 1;
                 }
                 rec = new Rectangle(xpos, ypos, width, height);
+                basketrec = new Rectangle(xpos+40,ypos+60, width/2, height/2);
+
         }
 
         public void move2() {
@@ -100,15 +104,17 @@ public class Basket {
                         xpos = 0;
                 }
                 if (xpos > 1000 - width) { //right wall
-                        xpos = 1000 - width;
+                        xpos = 1000;
                 }
                 if (ypos < 0) { //up wall
                         ypos = 0;
                 }
                 if (ypos > 700 - height) { //down wall
-                        ypos = 700 - height;
+                        ypos = 700;
                 }
                 rec = new Rectangle(xpos, ypos, width, height);
+                basketrec = new Rectangle(xpos+40,ypos+60, width/2, height/2);
+
         }
 
 }
